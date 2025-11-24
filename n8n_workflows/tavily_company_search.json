@@ -1,0 +1,188 @@
+{
+  "name": "企業名入力 → Tavily検索",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "company-search",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook（企業名受信）",
+      "type": "n8n-nodes-base.webhook",
+      "position": [0, 300],
+      "webhookId": "company-search-webhook",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "company-name",
+              "name": "companyName",
+              "type": "string",
+              "value": "={{ $json.body.companyName || $json.companyName || 'BigBear.ai' }}"
+            },
+            {
+              "id": "ticker",
+              "name": "ticker",
+              "type": "string",
+              "value": "={{ $json.body.ticker || $json.ticker || '' }}"
+            },
+            {
+              "id": "search-query",
+              "name": "searchQuery",
+              "type": "string",
+              "value": "=Gather the latest news, earnings information, business overview, and any data useful for investment decisions about {{ $json.body.companyName || $json.companyName || 'BigBear.ai' }} {{ $json.body.ticker || $json.ticker || '' }}. Include recent quarterly results, revenue growth, profit margins, stock price targets, analyst ratings, competitive advantages, and risk factors."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-query",
+      "name": "検索クエリを生成",
+      "type": "n8n-nodes-base.set",
+      "position": [220, 300],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "query": "={{ $json.searchQuery }}",
+        "options": {
+          "searchDepth": "advanced",
+          "includeAnswer": true,
+          "maxResults": 10
+        }
+      },
+      "id": "tavily-search",
+      "name": "Tavily - 企業情報検索",
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "position": [440, 300],
+      "typeVersion": 1,
+      "credentials": {
+        "tavilyApi": {
+          "id": "Tc8v2gnw9Shk23BO",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Tavily検索結果を整形\nconst tavilyData = $input.item.json;\nconst companyInfo = $('検索クエリを生成').first().json;\n\nlet formattedResult = '';\n\n// ヘッダー\nformattedResult += `# ${companyInfo.companyName} 企業情報\\n\\n`;\nformattedResult += `検索日時: ${new Date().toISOString()}\\n\\n`;\n\n// AI要約\nif (tavilyData.answer) {\n  formattedResult += `## AI要約\\n\\n${tavilyData.answer}\\n\\n`;\n}\n\n// 検索結果\nif (tavilyData.results && tavilyData.results.length > 0) {\n  formattedResult += `## 検索結果（${tavilyData.results.length}件）\\n\\n`;\n  \n  tavilyData.results.forEach((result, index) => {\n    formattedResult += `### ${index + 1}. ${result.title || '(タイトルなし)'}\\n`;\n    if (result.content) {\n      formattedResult += `${result.content}\\n\\n`;\n    }\n    if (result.url) {\n      formattedResult += `🔗 ${result.url}\\n\\n`;\n    }\n    formattedResult += '---\\n\\n';\n  });\n}\n\n// ソースURLリスト\nconst sources = tavilyData.results?.map(r => ({\n  title: r.title,\n  url: r.url,\n  score: r.score\n})) || [];\n\nreturn [{\n  json: {\n    companyName: companyInfo.companyName,\n    ticker: companyInfo.ticker,\n    answer: tavilyData.answer || '',\n    formattedResult,\n    resultCount: tavilyData.results?.length || 0,\n    sources,\n    rawResults: tavilyData.results || []\n  }\n}];"
+      },
+      "id": "format-results",
+      "name": "結果を整形",
+      "type": "n8n-nodes-base.code",
+      "position": [660, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"company\": \"{{ $json.companyName }}\",\n  \"ticker\": \"{{ $json.ticker }}\",\n  \"resultCount\": {{ $json.resultCount }},\n  \"summary\": {{ JSON.stringify($json.answer) }},\n  \"formattedResult\": {{ JSON.stringify($json.formattedResult) }},\n  \"sources\": {{ JSON.stringify($json.sources) }}\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-webhook",
+      "name": "検索結果を返却",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [880, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## 使い方\n\nPOSTリクエストで企業名を送信：\n\n```json\n{\n  \"companyName\": \"BigBear.ai\",\n  \"ticker\": \"BBAI\"\n}\n```\n\nまたは\n```json\n{\n  \"companyName\": \"NVIDIA\"\n}\n```",
+        "width": 320,
+        "color": 4
+      },
+      "id": "note-usage",
+      "name": "メモ：使い方",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [0, 80],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 検索クエリ（英語）\n\nGather the latest news, earnings information, \nbusiness overview, and any data useful for \ninvestment decisions about [company].\n\nInclude:\n- Recent quarterly results\n- Revenue growth\n- Profit margins\n- Stock price targets\n- Analyst ratings\n- Competitive advantages\n- Risk factors",
+        "width": 320,
+        "color": 3
+      },
+      "id": "note-query",
+      "name": "メモ：検索クエリ",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [220, 80],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Webhook（企業名受信）": {
+      "main": [
+        [
+          {
+            "node": "検索クエリを生成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "検索クエリを生成": {
+      "main": [
+        [
+          {
+            "node": "Tavily - 企業情報検索",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 企業情報検索": {
+      "main": [
+        [
+          {
+            "node": "結果を整形",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "結果を整形": {
+      "main": [
+        [
+          {
+            "node": "検索結果を返却",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Tavily"
+    },
+    {
+      "name": "企業検索"
+    }
+  ],
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
