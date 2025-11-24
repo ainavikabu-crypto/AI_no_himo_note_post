@@ -1,0 +1,460 @@
+{
+  "name": "US Stock Analysis to WordPress",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "手動実行",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "ticker",
+              "value": "={{ $json.ticker || 'BBAI' }}"
+            },
+            {
+              "name": "companyName",
+              "value": "={{ $json.companyName || 'BigBear.ai' }}"
+            },
+            {
+              "name": "companyNameJa",
+              "value": "={{ $json.companyNameJa || 'ビッグベア・エーアイ' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-company-info",
+      "name": "企業情報を設定",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [220, 300],
+      "notesInFlow": true,
+      "notes": "分析対象の企業情報を設定\n- ticker: ティッカーシンボル\n- companyName: 英語企業名\n- companyNameJa: 日本語企業名"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"{{ $credentials.tavilyApi.apiKey }}\",\n  \"query\": \"{{ $node['企業情報を設定'].json.ticker }} {{ $node['企業情報を設定'].json.companyName }} latest earnings Q3 Q4 2024 financial results revenue\",\n  \"search_depth\": \"advanced\",\n  \"include_answer\": true,\n  \"max_results\": 5\n}",
+        "options": {}
+      },
+      "id": "tavily-earnings",
+      "name": "Tavily - 決算情報検索",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 200],
+      "notesInFlow": true,
+      "notes": "Tavily APIで最新決算情報を検索"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"{{ $credentials.tavilyApi.apiKey }}\",\n  \"query\": \"{{ $node['企業情報を設定'].json.ticker }} {{ $node['企業情報を設定'].json.companyName }} business model products services AI technology 2024 outlook growth\",\n  \"search_depth\": \"advanced\",\n  \"include_answer\": true,\n  \"max_results\": 5\n}",
+        "options": {}
+      },
+      "id": "tavily-business",
+      "name": "Tavily - 事業内容・展望検索",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 400],
+      "notesInFlow": true,
+      "notes": "Tavily APIで事業内容と今後の展望を検索"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "earningsData",
+              "value": "={{ $node['Tavily - 決算情報検索'].json.answer }}"
+            },
+            {
+              "name": "earningsSources",
+              "value": "={{ JSON.stringify($node['Tavily - 決算情報検索'].json.results) }}"
+            },
+            {
+              "name": "businessData",
+              "value": "={{ $node['Tavily - 事業内容・展望検索'].json.answer }}"
+            },
+            {
+              "name": "businessSources",
+              "value": "={{ JSON.stringify($node['Tavily - 事業内容・展望検索'].json.results) }}"
+            },
+            {
+              "name": "ticker",
+              "value": "={{ $node['企業情報を設定'].json.ticker }}"
+            },
+            {
+              "name": "companyName",
+              "value": "={{ $node['企業情報を設定'].json.companyName }}"
+            },
+            {
+              "name": "companyNameJa",
+              "value": "={{ $node['企業情報を設定'].json.companyNameJa }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "merge-data",
+      "name": "データを統合",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "=あなたは「アイヒモ」というキャラクターです。以下の設定に従って記事を執筆してください。\n\n【アイヒモの設定】\n- 20代、メーカー勤務、社会人2年目\n- 「AIのひも」になることを目指している\n- 生成AIを活用して米国株の情報収集をしている\n- 小型〜中型株に注目している（大型株は情報が多いため）\n- 明るく親しみやすい「です、ます調」\n- 体験ベースで語る\n- 正直で率直（うまくいったことも、そうでなかったことも包み隠さず）\n\n【記事の要件】\n1. タイトル：「【銘柄分析】企業名（ティッカー）｜〇〇の注目株を5段階評価してみた」形式\n2. 冒頭にアイヒモの結論（総合評価★1〜5と、良い点・懸念点の要約）を配置\n3. 5段階評価の項目：\n   - 成長性（売上・利益の伸び）\n   - 収益性（黒字化、利益率）\n   - 財務健全性（現金、負債）\n   - 競争優位性（技術力、市場ポジション）\n   - 株価の割安度（PER、期待値との乖離）\n4. 事業内容と今後の展望を含める\n5. アイヒモ独自の視点（なぜこの銘柄に注目しているか、小型株としての魅力など）\n6. 投資は自己責任である旨の注意書き\n7. ハッシュタグを5つ追加（#米国株 #ティッカー #AI銘柄 など）\n8. プロフィール行を追加（20代｜メーカー勤務｜AIのひもになりたい）\n\n【分析対象】\n- ティッカー: {{ $json.ticker }}\n- 企業名: {{ $json.companyName }}（{{ $json.companyNameJa }}）\n\n【決算情報】\n{{ $json.earningsData }}\n\n【事業内容・展望】\n{{ $json.businessData }}\n\n上記の情報を元に、アイヒモの視点で銘柄分析記事を作成してください。Markdown形式で出力してください。"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 4000
+        }
+      },
+      "id": "openai-article",
+      "name": "OpenAI - 記事生成",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [880, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "GPT-4oでアイヒモの視点の記事を生成"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "generate",
+        "model": "dall-e-3",
+        "prompt": "=Create a professional stock analysis thumbnail image for a Japanese finance blog.\n\nMain elements:\n- Company name \"{{ $node['企業情報を設定'].json.companyName }}\" prominently displayed in the center\n- Ticker symbol \"{{ $node['企業情報を設定'].json.ticker }}\" in bold, displayed below the company name\n- A stylized abstract logo representing the company (tech/AI themed)\n- Text \"銘柄分析\" (Stock Analysis) in Japanese at the top\n\nBackground:\n- Dark blue to purple gradient with modern technology aesthetic\n- Abstract circuit board patterns or neural network visualization\n- Subtle glowing data points and connection lines\n- Clean, professional fintech style\n\nStyle:\n- Modern, minimalist design\n- High contrast for readability\n- 1792x1024 aspect ratio (landscape)\n- Professional and trustworthy appearance\n- No photorealistic elements, use flat design or 3D rendered style",
+        "options": {
+          "size": "1792x1024",
+          "quality": "hd",
+          "style": "vivid"
+        }
+      },
+      "id": "dalle-eyecatch",
+      "name": "DALL-E - アイキャッチ生成",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [880, 500],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "DALL-E 3でアイキャッチ画像を生成"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "articleContent",
+              "value": "={{ $node['OpenAI - 記事生成'].json.message.content }}"
+            },
+            {
+              "name": "eyecatchUrl",
+              "value": "={{ $node['DALL-E - アイキャッチ生成'].json.data[0].url }}"
+            },
+            {
+              "name": "ticker",
+              "value": "={{ $node['企業情報を設定'].json.ticker }}"
+            },
+            {
+              "name": "companyName",
+              "value": "={{ $node['企業情報を設定'].json.companyName }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-wordpress",
+      "name": "WordPress投稿準備",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1100, 400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.eyecatchUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-image",
+      "name": "アイキャッチ画像をダウンロード",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 400]
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "upload",
+        "additionalFields": {
+          "title": "={{ $node['WordPress投稿準備'].json.ticker }}-analysis-eyecatch",
+          "alt_text": "={{ $node['WordPress投稿準備'].json.companyName }} 銘柄分析アイキャッチ"
+        }
+      },
+      "id": "wordpress-upload-media",
+      "name": "WordPress - 画像アップロード",
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [1540, 400],
+      "credentials": {
+        "wordpressApi": {
+          "id": "your-wordpress-credential-id",
+          "name": "WordPress API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "create",
+        "title": "=【銘柄分析】{{ $node['WordPress投稿準備'].json.companyName }}（{{ $node['WordPress投稿準備'].json.ticker }}）",
+        "content": "={{ $node['WordPress投稿準備'].json.articleContent }}",
+        "additionalFields": {
+          "status": "draft",
+          "featured_media": "={{ $node['WordPress - 画像アップロード'].json.id }}",
+          "categories": ["米国株", "AI銘柄", "銘柄分析"],
+          "tags": ["{{ $node['WordPress投稿準備'].json.ticker }}", "米国株", "AI", "小型株", "投資"]
+        }
+      },
+      "id": "wordpress-create-post",
+      "name": "WordPress - 記事投稿",
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [1760, 400],
+      "credentials": {
+        "wordpressApi": {
+          "id": "your-wordpress-credential-id",
+          "name": "WordPress API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "下書きとしてWordPressに投稿"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "success"
+            },
+            {
+              "name": "postId",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "postUrl",
+              "value": "={{ $json.link }}"
+            },
+            {
+              "name": "message",
+              "value": "=記事「{{ $node['WordPress投稿準備'].json.companyName }}（{{ $node['WordPress投稿準備'].json.ticker }}）」の銘柄分析が完了しました。"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "output-result",
+      "name": "完了通知",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1980, 400]
+    }
+  ],
+  "connections": {
+    "手動実行": {
+      "main": [
+        [
+          {
+            "node": "企業情報を設定",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "企業情報を設定": {
+      "main": [
+        [
+          {
+            "node": "Tavily - 決算情報検索",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tavily - 事業内容・展望検索",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 決算情報検索": {
+      "main": [
+        [
+          {
+            "node": "データを統合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 事業内容・展望検索": {
+      "main": [
+        [
+          {
+            "node": "データを統合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "データを統合": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - 記事生成",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DALL-E - アイキャッチ生成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - 記事生成": {
+      "main": [
+        [
+          {
+            "node": "WordPress投稿準備",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DALL-E - アイキャッチ生成": {
+      "main": [
+        [
+          {
+            "node": "WordPress投稿準備",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WordPress投稿準備": {
+      "main": [
+        [
+          {
+            "node": "アイキャッチ画像をダウンロード",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "アイキャッチ画像をダウンロード": {
+      "main": [
+        [
+          {
+            "node": "WordPress - 画像アップロード",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WordPress - 画像アップロード": {
+      "main": [
+        [
+          {
+            "node": "WordPress - 記事投稿",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WordPress - 記事投稿": {
+      "main": [
+        [
+          {
+            "node": "完了通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "米国株分析",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    },
+    {
+      "name": "WordPress",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    },
+    {
+      "name": "AI",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-11-24T00:00:00.000Z",
+  "versionId": "1"
+}
