@@ -1,0 +1,373 @@
+{
+  "name": "企業分析フォーム → MD出力",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "米国株 企業分析",
+        "formDescription": "企業名を入力すると、決算情報・株価情報を自動で収集し、要約をMarkdownファイルで出力します。",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "企業名（英語）",
+              "fieldType": "text",
+              "placeholder": "例：BigBear.ai",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "ティッカーシンボル",
+              "fieldType": "text",
+              "placeholder": "例：BBAI",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "企業名（日本語）",
+              "fieldType": "text",
+              "placeholder": "例：ビッグベア・エーアイ",
+              "requiredField": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "form-trigger",
+      "name": "フォーム送信時",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [0, 300],
+      "webhookId": "stock-analysis-form",
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "company-name",
+              "name": "companyName",
+              "type": "string",
+              "value": "={{ $json['企業名（英語）'] }}"
+            },
+            {
+              "id": "ticker",
+              "name": "ticker",
+              "type": "string",
+              "value": "={{ $json['ティッカーシンボル'].toUpperCase() }}"
+            },
+            {
+              "id": "company-name-ja",
+              "name": "companyNameJa",
+              "type": "string",
+              "value": "={{ $json['企業名（日本語）'] || $json['企業名（英語）'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-company-info",
+      "name": "企業情報を整形",
+      "type": "n8n-nodes-base.set",
+      "position": [220, 300],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "query": "={{ $json.ticker }} {{ $json.companyName }} latest earnings Q3 Q4 2024 2025 financial results revenue profit guidance",
+        "options": {
+          "searchDepth": "advanced",
+          "includeAnswer": true
+        }
+      },
+      "id": "tavily-earnings",
+      "name": "Tavily - 決算情報検索",
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "position": [440, 200],
+      "typeVersion": 1,
+      "credentials": {
+        "tavilyApi": {
+          "id": "Tc8v2gnw9Shk23BO",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{ $node['企業情報を整形'].json.ticker }} {{ $node['企業情報を整形'].json.companyName }} stock price target analyst rating forecast 2024 2025",
+        "options": {
+          "searchDepth": "advanced",
+          "includeAnswer": true
+        }
+      },
+      "id": "tavily-stock",
+      "name": "Tavily - 株価情報検索",
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "position": [440, 400],
+      "typeVersion": 1,
+      "credentials": {
+        "tavilyApi": {
+          "id": "Tc8v2gnw9Shk23BO",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-results",
+      "name": "検索結果を統合",
+      "type": "n8n-nodes-base.merge",
+      "position": [660, 300],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "jsCode": "// 決算情報と株価情報の検索結果を統合\nconst items = $input.all();\nconst companyInfo = $('企業情報を整形').first().json;\n\n// 決算情報\nconst earningsData = items[0]?.json || {};\n// 株価情報\nconst stockData = items[1]?.json || {};\n\nlet combinedBodyText = '';\n\n// === 決算情報 ===\ncombinedBodyText += '# 決算情報\\n\\n';\nif (earningsData.answer) {\n  combinedBodyText += `## AI要約\\n${earningsData.answer}\\n\\n`;\n}\nif (earningsData.results && earningsData.results.length > 0) {\n  combinedBodyText += '## 検索結果\\n\\n';\n  earningsData.results.forEach((result, index) => {\n    combinedBodyText += `### ${index + 1}. ${result.title || '(タイトルなし)'}\\n`;\n    if (result.content) {\n      combinedBodyText += `${result.content}\\n`;\n    }\n    if (result.url) {\n      combinedBodyText += `出典: ${result.url}\\n`;\n    }\n    combinedBodyText += '\\n';\n  });\n}\n\n// === 株価情報 ===\ncombinedBodyText += '\\n# 株価情報\\n\\n';\nif (stockData.answer) {\n  combinedBodyText += `## AI要約\\n${stockData.answer}\\n\\n`;\n}\nif (stockData.results && stockData.results.length > 0) {\n  combinedBodyText += '## 検索結果\\n\\n';\n  stockData.results.forEach((result, index) => {\n    combinedBodyText += `### ${index + 1}. ${result.title || '(タイトルなし)'}\\n`;\n    if (result.content) {\n      combinedBodyText += `${result.content}\\n`;\n    }\n    if (result.url) {\n      combinedBodyText += `出典: ${result.url}\\n`;\n    }\n    combinedBodyText += '\\n';\n  });\n}\n\n// ソースURLを収集\nconst sources = [];\nif (earningsData.results) {\n  earningsData.results.forEach(r => sources.push({ title: r.title, url: r.url, type: 'earnings' }));\n}\nif (stockData.results) {\n  stockData.results.forEach(r => sources.push({ title: r.title, url: r.url, type: 'stock' }));\n}\n\nreturn [{\n  json: {\n    combinedBodyText,\n    ticker: companyInfo.ticker,\n    companyName: companyInfo.companyName,\n    companyNameJa: companyInfo.companyNameJa,\n    earningsAnswer: earningsData.answer || '',\n    stockAnswer: stockData.answer || '',\n    sources: JSON.stringify(sources),\n    earningsResultCount: earningsData.results ? earningsData.results.length : 0,\n    stockResultCount: stockData.results ? stockData.results.length : 0\n  }\n}];"
+      },
+      "id": "code-combine",
+      "name": "検索結果を結合",
+      "type": "n8n-nodes-base.code",
+      "position": [880, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=役割：精密なデータ抽出・要約専門家\n\n指示：tavilyAIから渡された本文テキストを分析し、その中に含まれる重要な情報を構造化した詳細な要約を作成してください。高品質なブログ記事の作成に役立つ、独自性があり関連性の高い実用的なインサイトの特定に焦点を当ててください。\n\n対象企業: {{ $json.companyName }}（{{ $json.companyNameJa }}）\nティッカー: {{ $json.ticker }}\n\n## 検索結果データ\n\n{{ $json.combinedBodyText }}\n\n## 出力形式（Markdown）\n\n以下の形式で要約を作成してください：\n\n---\nticker: {{ $json.ticker }}\ncompany: {{ $json.companyName }}\ncompany_ja: {{ $json.companyNameJa }}\ngenerated_at: [現在日時]\ntype: stock_analysis_summary\n---\n\n# {{ $json.companyName }}（{{ $json.ticker }}）企業分析レポート\n\n## 1. 企業概要\n[企業の概要、事業内容を簡潔に記載]\n\n## 2. 最新決算情報\n### 財務ハイライト\n| 指標 | 数値 | 前年比/備考 |\n|------|------|-------------|\n| 売上高 | | |\n| 純利益/損失 | | |\n| EPS | | |\n| ガイダンス | | |\n\n### 決算のポイント\n- [箇条書きで重要ポイント]\n\n## 3. 株価情報\n### 現在の株価状況\n- 現在株価: \n- 52週高値/安値: \n- 時価総額: \n\n### アナリスト評価\n| 項目 | 内容 |\n|------|------|\n| コンセンサス評価 | |\n| 目標株価 | |\n| 予想レンジ | |\n\n## 4. 今後の展望\n### 成長ドライバー\n- [箇条書き]\n\n### リスク要因\n- [箇条書き]\n\n## 5. 投資判断のポイント\n[アイヒモの視点での分析コメント]\n\n## 参照ソース\n[ソースのリスト]\n\n---\n*この要約は自動生成されました。投資判断は自己責任でお願いします。*\n\n---\n\n注意事項：\n- 出力は必ず日本語で作成してください\n- 数値データは可能な限り具体的に記載してください\n- 情報が不明な場合は「情報なし」と記載してください\n- ブログ記事作成に活用できる独自のインサイトを含めてください"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.5,
+          "maxTokens": 4000
+        }
+      },
+      "id": "openai-summary",
+      "name": "OpenAI - 企業分析要約",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [1100, 300],
+      "typeVersion": 1.8,
+      "credentials": {
+        "openAiApi": {
+          "id": "xnRrWMydxl9qCY62",
+          "name": "OpenAi account_selfhost"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 要約結果をMarkdownファイル用に整形\nconst summaryContent = $input.item.json.message.content;\nconst companyInfo = $('検索結果を結合').first().json;\nconst sources = JSON.parse(companyInfo.sources || '[]');\nconst now = new Date();\nconst dateStr = now.toISOString().split('T')[0];\nconst timestamp = now.toISOString();\n\n// ファイル名を生成\nconst fileName = `${companyInfo.ticker}_analysis_${dateStr}.md`;\n\n// ソース一覧を生成（まだ含まれていない場合）\nlet sourceList = '';\nif (sources.length > 0 && !summaryContent.includes('## 参照ソース')) {\n  sourceList = '\\n\\n## 参照ソース\\n\\n';\n  sources.forEach((s, i) => {\n    const typeLabel = s.type === 'earnings' ? '決算' : '株価';\n    sourceList += `${i + 1}. [${s.title}](${s.url}) (${typeLabel})\\n`;\n  });\n}\n\n// フッターを追加\nconst footer = `\\n\\n---\\n*生成日時: ${timestamp}*\\n*このレポートは自動生成されました。投資判断は自己責任でお願いします。*\\n`;\n\nconst finalContent = summaryContent + sourceList + footer;\n\nreturn [{\n  json: {\n    content: finalContent,\n    fileName: fileName,\n    ticker: companyInfo.ticker,\n    companyName: companyInfo.companyName,\n    companyNameJa: companyInfo.companyNameJa,\n    generatedAt: timestamp\n  }\n}];"
+      },
+      "id": "code-format-md",
+      "name": "MD形式に整形",
+      "type": "n8n-nodes-base.code",
+      "position": [1320, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/stock_analysis/{{ $json.fileName }}",
+        "fileContent": "={{ $json.content }}",
+        "options": {}
+      },
+      "id": "write-md-file",
+      "name": "MDファイル保存",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [1540, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=# 企業分析レポート生成完了\n\n## 対象企業\n- 企業名: {{ $('検索結果を結合').item.json.companyName }}（{{ $('検索結果を結合').item.json.companyNameJa }}）\n- ティッカー: {{ $('検索結果を結合').item.json.ticker }}\n\n## 生成ファイル\n- ファイル名: {{ $('MD形式に整形').item.json.fileName }}\n- 保存先: /data/stock_analysis/\n\n## 収集情報\n- 決算情報: {{ $('検索結果を結合').item.json.earningsResultCount }}件\n- 株価情報: {{ $('検索結果を結合').item.json.stockResultCount }}件\n\n---\n生成日時: {{ $('MD形式に整形').item.json.generatedAt }}",
+        "options": {}
+      },
+      "id": "respond-form",
+      "name": "完了レスポンス",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1760, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## フォーム入力\n\n企業名とティッカーを入力すると\n自動で分析を開始します。",
+        "width": 300,
+        "color": 4
+      },
+      "id": "note-form",
+      "name": "メモ：フォーム入力",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [0, 100],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Tavily検索\n\n決算情報と株価情報を\n並列で検索します。",
+        "width": 300,
+        "color": 4
+      },
+      "id": "note-tavily",
+      "name": "メモ：Tavily検索",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [440, 0],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## OpenAI要約\n\nsummaryプロンプトを使用して\n構造化された要約を生成します。",
+        "width": 300,
+        "color": 3
+      },
+      "id": "note-openai",
+      "name": "メモ：OpenAI要約",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [1100, 100],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## MD保存\n\nMarkdownファイルとして\n保存し、完了を通知します。",
+        "width": 300,
+        "color": 7
+      },
+      "id": "note-save",
+      "name": "メモ：MD保存",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [1540, 100],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "フォーム送信時": {
+      "main": [
+        [
+          {
+            "node": "企業情報を整形",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "企業情報を整形": {
+      "main": [
+        [
+          {
+            "node": "Tavily - 決算情報検索",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tavily - 株価情報検索",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 決算情報検索": {
+      "main": [
+        [
+          {
+            "node": "検索結果を統合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 株価情報検索": {
+      "main": [
+        [
+          {
+            "node": "検索結果を統合",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "検索結果を統合": {
+      "main": [
+        [
+          {
+            "node": "検索結果を結合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "検索結果を結合": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - 企業分析要約",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - 企業分析要約": {
+      "main": [
+        [
+          {
+            "node": "MD形式に整形",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MD形式に整形": {
+      "main": [
+        [
+          {
+            "node": "MDファイル保存",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MDファイル保存": {
+      "main": [
+        [
+          {
+            "node": "完了レスポンス",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "米国株分析"
+    },
+    {
+      "name": "フォーム入力"
+    },
+    {
+      "name": "MD出力"
+    }
+  ],
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
