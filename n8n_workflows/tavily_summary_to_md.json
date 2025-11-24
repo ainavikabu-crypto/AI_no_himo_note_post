@@ -1,0 +1,377 @@
+{
+  "name": "Tavily企業情報検索→要約→MD保存",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "手動実行",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "ticker",
+              "value": "BBAI"
+            },
+            {
+              "name": "companyName",
+              "value": "BigBear.ai"
+            },
+            {
+              "name": "companyNameJa",
+              "value": "ビッグベア・エーアイ"
+            },
+            {
+              "name": "outputDir",
+              "value": "/data/stock_research"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-company-info",
+      "name": "企業情報を設定",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [220, 300],
+      "notesInFlow": true,
+      "notes": "分析対象の企業情報を設定\nticker: ティッカーシンボル\ncompanyName: 英語企業名\ncompanyNameJa: 日本語企業名\noutputDir: 出力先ディレクトリ"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"{{ $credentials.tavilyApi.apiKey }}\",\n  \"query\": \"{{ $node['企業情報を設定'].json.ticker }} {{ $node['企業情報を設定'].json.companyName }} company business model products services technology AI 2024\",\n  \"search_depth\": \"advanced\",\n  \"include_answer\": true,\n  \"include_raw_content\": true,\n  \"max_results\": 5\n}",
+        "options": {}
+      },
+      "id": "tavily-business",
+      "name": "Tavily - 事業内容検索",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "your-tavily-credential-id",
+          "name": "Tavily API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "Tavily APIで事業内容を検索"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"{{ $credentials.tavilyApi.apiKey }}\",\n  \"query\": \"{{ $node['企業情報を設定'].json.ticker }} {{ $node['企業情報を設定'].json.companyName }} earnings Q3 Q4 2024 financial results revenue profit guidance\",\n  \"search_depth\": \"advanced\",\n  \"include_answer\": true,\n  \"include_raw_content\": true,\n  \"max_results\": 5\n}",
+        "options": {}
+      },
+      "id": "tavily-earnings",
+      "name": "Tavily - 決算情報検索",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "your-tavily-credential-id",
+          "name": "Tavily API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "Tavily APIで最新決算情報を検索"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-tavily",
+      "name": "検索結果を統合",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 事業内容と決算情報の検索結果を統合\nconst businessData = $input.all()[0].json;\nconst earningsData = $input.all()[1].json;\n\n// 検索結果のテキストを結合\nlet combinedBodyText = '';\n\n// 事業内容の回答と結果を追加\ncombinedBodyText += '=== 事業内容 ===\\n';\nif (businessData.answer) {\n  combinedBodyText += businessData.answer + '\\n\\n';\n}\nif (businessData.results) {\n  businessData.results.forEach((result, index) => {\n    combinedBodyText += `--- ソース ${index + 1}: ${result.title} ---\\n`;\n    combinedBodyText += result.content + '\\n\\n';\n    if (result.raw_content) {\n      combinedBodyText += result.raw_content.substring(0, 2000) + '\\n\\n';\n    }\n  });\n}\n\n// 決算情報の回答と結果を追加\ncombinedBodyText += '\\n=== 決算情報 ===\\n';\nif (earningsData.answer) {\n  combinedBodyText += earningsData.answer + '\\n\\n';\n}\nif (earningsData.results) {\n  earningsData.results.forEach((result, index) => {\n    combinedBodyText += `--- ソース ${index + 1}: ${result.title} ---\\n`;\n    combinedBodyText += result.content + '\\n\\n';\n    if (result.raw_content) {\n      combinedBodyText += result.raw_content.substring(0, 2000) + '\\n\\n';\n    }\n  });\n}\n\n// ソースURLを収集\nconst sources = [];\nif (businessData.results) {\n  businessData.results.forEach(r => sources.push({ title: r.title, url: r.url }));\n}\nif (earningsData.results) {\n  earningsData.results.forEach(r => sources.push({ title: r.title, url: r.url }));\n}\n\nreturn {\n  combinedBodyText,\n  sources: JSON.stringify(sources),\n  ticker: $('企業情報を設定').item.json.ticker,\n  companyName: $('企業情報を設定').item.json.companyName,\n  companyNameJa: $('企業情報を設定').item.json.companyNameJa,\n  outputDir: $('企業情報を設定').item.json.outputDir,\n  businessAnswer: businessData.answer || '',\n  earningsAnswer: earningsData.answer || ''\n};"
+      },
+      "id": "code-combine",
+      "name": "検索結果を結合",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 300],
+      "notesInFlow": true,
+      "notes": "事業内容と決算情報のテキストを結合"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "=役割：精密なデータ抽出・要約専門家\n\n指示：tavilyAIから渡された本文テキストを分析し、その中に含まれる重要な情報を構造化した詳細な要約を作成してください。高品質なブログ記事の作成に役立つ、独自性があり関連性の高い実用的なインサイトの特定に焦点を当ててください。\n\n手順\n\n1. 入力分析：提供されたウェブページの統合本文テキストを検証する\n\n2. トピック識別：統合テキストで議論されている包括的なテーマやトピックを特定する\n\n3. コンテンツ抽出：以下のような重要な詳細を抽出する：\n・主要なポイントや論点\n・裏付けとなる事実、統計、証拠\n・独自のインサイトや視点\n\n4. 整理された要約：ブログライターが使いやすい形式で情報を構造化する。\n以下のセクションを使用：\n・はじめに/概要\n・主要なインサイト/発見事項（リスト形式）\n・裏付けとなる証拠/事例\n・含意や潜在的な応用\n\n5. 明確性と関連性\n・要約は簡潔で、不必要な繰り返しを避け、ブログ記事作成に直接関連するものにする\n・最終目標：入力テキストからすべての重要な情報を含む、一貫性があり詳細な要約を生成すること。この要約は、その後のブログ記事作成ステップの基盤となるコンテンツとして機能します。\n・重点事項：読者に深みと価値を提供するコンテンツの抽出を重視してください。例：独自のデータポイント、専門家の意見、実用的な応用例など。一般的な情報の重複は避け、代わりに統合されたウェブページに固有の具体的な内容を強調してください。\n\n対象企業: {{ $json.companyName }}（{{ $json.companyNameJa }}）/ ティッカー: {{ $json.ticker }}\n\n統合本文テキスト:\n{{ $json.combinedBodyText }}\n\n---\n出力形式（Markdown）:\n\n# {{ $json.companyName }}（{{ $json.ticker }}）企業情報要約\n\n## 概要\n[企業の概要と主要事業]\n\n## 事業内容\n### 主要製品・サービス\n- [リスト形式で記載]\n\n### 技術・強み\n- [リスト形式で記載]\n\n## 最新決算情報\n### 財務ハイライト\n| 指標 | 数値 | 前年比 |\n|------|------|--------|\n| 売上高 | | |\n| 純利益/損失 | | |\n| 粗利益率 | | |\n\n### 決算のポイント\n- [リスト形式で記載]\n\n## 今後の展望\n- [リスト形式で記載]\n\n## 主要なインサイト\n- [ブログ記事に活用できる独自の視点]\n\n## 参考情報\n- [ソースのリスト]\n\n---\n注意: 出力は必ず日本語で作成してください。"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.5,
+          "maxTokens": 4000
+        }
+      },
+      "id": "openai-summary",
+      "name": "OpenAI - 要約ライター",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [1100, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI API"
+        }
+      },
+      "notesInFlow": true,
+      "notes": "summaryプロンプトを使用して検索結果を要約"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "summaryContent",
+              "value": "={{ $node['OpenAI - 要約ライター'].json.message.content }}"
+            },
+            {
+              "name": "ticker",
+              "value": "={{ $node['検索結果を結合'].json.ticker }}"
+            },
+            {
+              "name": "companyName",
+              "value": "={{ $node['検索結果を結合'].json.companyName }}"
+            },
+            {
+              "name": "outputDir",
+              "value": "={{ $node['検索結果を結合'].json.outputDir }}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $node['検索結果を結合'].json.ticker }}_summary_{{ $now.format('yyyy-MM-dd') }}.md"
+            },
+            {
+              "name": "sources",
+              "value": "={{ $node['検索結果を結合'].json.sources }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-output",
+      "name": "出力準備",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1320, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 要約内容にメタデータを追加\nconst summary = $input.item.json.summaryContent;\nconst ticker = $input.item.json.ticker;\nconst companyName = $input.item.json.companyName;\nconst sources = JSON.parse($input.item.json.sources || '[]');\nconst now = new Date().toISOString();\n\n// ソース一覧を生成\nlet sourceList = '';\nif (sources.length > 0) {\n  sourceList = '\\n## 参照ソース\\n\\n';\n  sources.forEach((s, i) => {\n    sourceList += `${i + 1}. [${s.title}](${s.url})\\n`;\n  });\n}\n\n// メタデータヘッダーを追加\nconst header = `---\nticker: ${ticker}\ncompany: ${companyName}\ngenerated_at: ${now}\ntype: research_summary\n---\n\n`;\n\n// フッターを追加\nconst footer = `\\n\\n---\\n\\n*この要約は ${now.split('T')[0]} に自動生成されました。*\\n*投資判断は自己責任でお願いします。*\\n`;\n\nconst finalContent = header + summary + sourceList + footer;\n\nreturn {\n  content: finalContent,\n  fileName: $input.item.json.fileName,\n  outputDir: $input.item.json.outputDir,\n  ticker: ticker,\n  companyName: companyName\n};"
+      },
+      "id": "code-format",
+      "name": "Markdownフォーマット",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1540, 300],
+      "notesInFlow": true,
+      "notes": "メタデータとソース一覧を追加"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.outputDir }}/{{ $json.fileName }}",
+        "fileContent": "={{ $json.content }}",
+        "options": {}
+      },
+      "id": "write-file",
+      "name": "MDファイル保存",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [1760, 300],
+      "notesInFlow": true,
+      "notes": "要約をMarkdownファイルとして保存"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "success"
+            },
+            {
+              "name": "message",
+              "value": "={{ $node['Markdownフォーマット'].json.companyName }}（{{ $node['Markdownフォーマット'].json.ticker }}）の要約が保存されました"
+            },
+            {
+              "name": "filePath",
+              "value": "={{ $node['Markdownフォーマット'].json.outputDir }}/{{ $node['Markdownフォーマット'].json.fileName }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "output-result",
+      "name": "完了通知",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1980, 300]
+    }
+  ],
+  "connections": {
+    "手動実行": {
+      "main": [
+        [
+          {
+            "node": "企業情報を設定",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "企業情報を設定": {
+      "main": [
+        [
+          {
+            "node": "Tavily - 事業内容検索",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tavily - 決算情報検索",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 事業内容検索": {
+      "main": [
+        [
+          {
+            "node": "検索結果を統合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily - 決算情報検索": {
+      "main": [
+        [
+          {
+            "node": "検索結果を統合",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "検索結果を統合": {
+      "main": [
+        [
+          {
+            "node": "検索結果を結合",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "検索結果を結合": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - 要約ライター",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - 要約ライター": {
+      "main": [
+        [
+          {
+            "node": "出力準備",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "出力準備": {
+      "main": [
+        [
+          {
+            "node": "Markdownフォーマット",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdownフォーマット": {
+      "main": [
+        [
+          {
+            "node": "MDファイル保存",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MDファイル保存": {
+      "main": [
+        [
+          {
+            "node": "完了通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "Tavily",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    },
+    {
+      "name": "要約",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    },
+    {
+      "name": "米国株リサーチ",
+      "createdAt": "2024-11-24T00:00:00.000Z",
+      "updatedAt": "2024-11-24T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-11-24T00:00:00.000Z",
+  "versionId": "1"
+}
