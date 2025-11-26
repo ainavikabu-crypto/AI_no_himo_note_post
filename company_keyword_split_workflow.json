@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 企業名を取得\nconst companyName = $json.companyName || \"\";\n\n// 検索キーワードのサフィックスを定義\nconst keywords = [\n  \"overview\",\n  \"Business description\",\n  \"financial result\"\n];\n\n// 企業名 + キーワードの組み合わせを生成\nconst searchKeywords = keywords.map((keyword, index) => ({\n  companyName: companyName,\n  keyword: keyword,\n  searchQuery: `${companyName} ${keyword}`,\n  index: index + 1,\n  total: keywords.length\n}));\n\n// 配列を返す\nreturn searchKeywords;"
+        "jsCode": "// 企業名を取得\nconst companyName = $json.companyName || \"\";\n\n// 検索キーワードのサフィックスを定義\nconst keywords = [\n  \"overview\",\n  \"Business description\",\n  \"financial result\"\n];\n\n// 企業名 + キーワードの組み合わせを生成\nconst searchKeywords = keywords.map((keyword, index) => ({\n  json: {\n    companyName: companyName,\n    keyword: keyword,\n    searchQuery: `${companyName} ${keyword}`,\n    index: index + 1,\n    total: keywords.length\n  }\n}));\n\n// 配列を返す\nreturn searchKeywords;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -62,7 +62,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 各キーワードを処理\nconst companyName = $json.companyName;\nconst keyword = $json.keyword;\nconst searchQuery = $json.searchQuery;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  companyName: companyName,\n  keywordType: keyword,\n  fullSearchQuery: searchQuery,\n  itemNumber: index,\n  totalItems: total,\n  message: `検索キーワード ${index}/${total}: ${searchQuery}`,\n  timestamp: new Date().toISOString(),\n  // 次のノードで使用可能なデータ\n  readyForSearch: true\n};"
+        "jsCode": "// 各キーワードを処理\nconst companyName = $json.companyName;\nconst keyword = $json.keyword;\nconst searchQuery = $json.searchQuery;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  json: {\n    companyName: companyName,\n    keywordType: keyword,\n    fullSearchQuery: searchQuery,\n    itemNumber: index,\n    totalItems: total,\n    message: `検索キーワード ${index}/${total}: ${searchQuery}`,\n    timestamp: new Date().toISOString(),\n    // 次のノードで使用可能なデータ\n    readyForSearch: true\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,

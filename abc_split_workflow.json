@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// カンマ区切りの文字列を分割\nconst text = $json.text || \"\";\n\n// カンマで分割して配列にする\nconst items = text.split(',').map(item => item.trim());\n\n// 各アイテムを個別のオブジェクトとして返す\nreturn items.map((item, index) => ({\n  value: item,\n  index: index + 1,\n  total: items.length\n}));"
+        "jsCode": "// カンマ区切りの文字列を分割\nconst text = $json.text || \"\";\n\n// カンマで分割して配列にする\nconst items = text.split(',').map(item => item.trim());\n\n// 各アイテムを個別のオブジェクトとして返す\nreturn items.map((item, index) => ({\n  json: {\n    value: item,\n    index: index + 1,\n    total: items.length\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -62,7 +62,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 各アイテムを処理\nconst value = $json.value;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  item: value,\n  position: index,\n  totalItems: total,\n  message: `アイテム ${index}/${total}: ${value}`,\n  timestamp: new Date().toISOString()\n};"
+        "jsCode": "// 各アイテムを処理\nconst value = $json.value;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  json: {\n    item: value,\n    position: index,\n    totalItems: total,\n    message: `アイテム ${index}/${total}: ${value}`,\n    timestamp: new Date().toISOString()\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,

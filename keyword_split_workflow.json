@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// キーワード文字列をカンマで分割して配列に変換\nconst keywordsString = $json.keywords || \"\";\n\n// カンマで分割して配列にする\nconst keywordsArray = keywordsString.split(',').map(keyword => keyword.trim());\n\n// 各キーワードを個別のアイテムとして返す\nreturn keywordsArray.map(keyword => ({\n  keyword: keyword,\n  index: keywordsArray.indexOf(keyword) + 1,\n  total: keywordsArray.length\n}));"
+        "jsCode": "// キーワード文字列をカンマで分割して配列に変換\nconst keywordsString = $json.keywords || \"\";\n\n// カンマで分割して配列にする\nconst keywordsArray = keywordsString.split(',').map(keyword => keyword.trim());\n\n// 各キーワードを個別のアイテムとして返す\nreturn keywordsArray.map((keyword, index) => ({\n  json: {\n    keyword: keyword,\n    index: index + 1,\n    total: keywordsArray.length\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -62,7 +62,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 各キーワードを処理\nconst keyword = $json.keyword;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  processedKeyword: keyword,\n  keywordNumber: index,\n  totalKeywords: total,\n  message: `キーワード ${index}/${total}: ${keyword}`,\n  timestamp: new Date().toISOString()\n};"
+        "jsCode": "// 各キーワードを処理\nconst keyword = $json.keyword;\nconst index = $json.index;\nconst total = $json.total;\n\n// 処理結果を返す\nreturn {\n  json: {\n    processedKeyword: keyword,\n    keywordNumber: index,\n    totalKeywords: total,\n    message: `キーワード ${index}/${total}: ${keyword}`,\n    timestamp: new Date().toISOString()\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
