@@ -1,4 +1,4 @@
-# 【銘柄分析】驚異の625%成長！AIインフラ企業Nebius Group（NBIS）を5段階評価してみた
+# Nebius Group（NBIS）【銘柄分析】驚異の625%成長のAIインフラ企業を5段階評価してみた
 
 20代｜メーカー勤務｜AIのひもになりたい
 
@@ -347,41 +347,41 @@ Nebius Groupが今後どう成長していくか、私なりに考えてみま�
 
 **何がNebiusを成長させるのか？**
 
-1. **AI需要の継続的拡大**
+**1. AI需要の継続的拡大**
 
-   生成AIの普及はまだ始まったばかりです。企業のAI導入、AIエージェントの活用、マルチモーダルAIの発展...これらすべてが、AIインフラ需要を押し上げます。Nebiusは、まさにその波に乗っているって感じです。
+生成AIの普及はまだ始まったばかりです。企業のAI導入、AIエージェントの活用、マルチモーダルAIの発展...これらすべてが、AIインフラ需要を押し上げます。Nebiusは、まさにその波に乗っているって感じです。
 
-2. **データセンター拡張**
+**2. データセンター拡張**
 
-   700百万ドルの資金で、米国やその他地域にデータセンターを拡張中。供給能力が増えれば、さらに売上を伸ばせます。特に、米国市場での存在感を高められれば、成長が加速するでしょう。
+700百万ドルの資金で、米国やその他地域にデータセンターを拡張中。供給能力が増えれば、さらに売上を伸ばせます。特に、米国市場での存在感を高められれば、成長が加速するでしょう。
 
-3. **NVIDIA連携の深化**
+**3. NVIDIA連携の深化**
 
-   NVIDIAとのパートナーシップが深まれば、最新GPU技術へのアクセスがさらに有利になります。次世代GPUをいち早く導入できれば、競争優位性が高まりますね。
+NVIDIAとのパートナーシップが深まれば、最新GPU技術へのアクセスがさらに有利になります。次世代GPUをいち早く導入できれば、競争優位性が高まりますね。
 
-4. **規模の経済効果**
+**4. 規模の経済効果**
 
-   AIインフラは固定費ビジネスです。データセンターの稼働率が上がれば、利益率が一気に改善する可能性があります。赤字から黒字への転換が実現すれば、株価的にもかなりポジティブです。
+AIインフラは固定費ビジネスです。データセンターの稼働率が上がれば、利益率が一気に改善する可能性があります。赤字から黒字への転換が実現すれば、株価的にもかなりポジティブです。
 
 ### リスク要因
 
 **一方で、こんなリスクもあります。**
 
-1. **競争激化**
+**1. 競争激化**
 
-   正直、AIインフラ市場は参入障壁がそこまで高くないんです。資金力のある大手が本気で参入してきたら、Nebiusは苦戦するかもしれません。AWS、Azure、Google Cloudという巨人がいますからね。
+正直、AIインフラ市場は参入障壁がそこまで高くないんです。資金力のある大手が本気で参入してきたら、Nebiusは苦戦するかもしれません。AWS、Azure、Google Cloudという巨人がいますからね。
 
-2. **GPU供給リスク**
+**2. GPU供給リスク**
 
-   NVIDIAからのGPU供給が滞ったら、事業が成り立ちません。NVIDIAとの関係が悪化したり、GPU不足がさらに深刻化したりすれば、成長にブレーキがかかるリスクがあります。
+NVIDIAからのGPU供給が滞ったら、事業が成り立ちません。NVIDIAとの関係が悪化したり、GPU不足がさらに深刻化したりすれば、成長にブレーキがかかるリスクがあります。
 
-3. **資金調達リスク**
+**3. 資金調達リスク**
 
-   今後もデータセンター拡張には巨額の資金が必要です。追加の資金調達が必要になれば、株式希薄化がさらに進む可能性があります。株主にとっては痛手ですね。
+今後もデータセンター拡張には巨額の資金が必要です。追加の資金調達が必要になれば、株式希薄化がさらに進む可能性があります。株主にとっては痛手ですね。
 
-4. **AI需要の変動**
+**4. AI需要の変動**
 
-   AIブームが一段落したら、需要が鈍化する可能性もあります。今は「AIバブル」と言われることもありますが、実需がついてこなければ、成長が止まるリスクがあります。
+AIブームが一段落したら、需要が鈍化する可能性もあります。今は「AIバブル」と言われることもありますが、実需がついてこなければ、成長が止まるリスクがあります。
 
 ---
 
@@ -448,3 +448,38 @@ NVIDIAとの連携、エネルギー効率の高いデータセンター、子�
 ---
 
 **注意**: この記事は投資を推奨するものではありません。投資は元本割れのリスクがあります。投資判断はご自身の責任でお願いします。
+
+---
+
+## アイキャッチ画像生成用プロンプト（Nano Banana用）
+
+```
+Create a professional stock analysis blog header image in landscape 16:9 format for Nebius Group.
+
+TEXT TO INCLUDE IN IMAGE (render exactly as written):
+- Large bold "NBIS" in white at the top left
+- Below that: "Nebius Group" in smaller white text
+- 4 gold stars "★★★★☆" prominently displayed in center
+- "+625%" in bright neon green with upward arrow
+- Japanese text "銘柄分析" at the top right corner
+
+VISUAL DESIGN:
+Create a futuristic AI infrastructure themed background with a dark blue to purple gradient. Add glowing GPU server racks, data center imagery, neural network patterns, and flowing data streams. Include NVIDIA logo style green accents subtly. Show upward trending growth chart in background.
+
+LAYOUT:
+- Left side: "NBIS" ticker and "Nebius Group" stacked vertically
+- Center: 4 gold stars rating (★★★★☆)
+- Right side: Growth indicator "+625%" in large neon green text with upward arrow "↑"
+- Top right corner: "銘柄分析" in white text
+
+COLOR SCHEME:
+- Background: Deep blue (#0A2463) to dark purple (#1A1A2E) gradient
+- Text: White (#FFFFFF) for all text
+- Stars: Gold (#FFD700)
+- Growth number: Neon green (#00FF88) - very bright and eye-catching
+- Accents: NVIDIA-style green (#76B900), Cyan (#00D9FF) glow effects
+- Server racks: Dark gray with blue/green glowing lights
+
+STYLE:
+Modern, high-tech, AI data center aesthetic. Clean and professional with futuristic tech elements. High contrast for social media visibility. No human faces or photographs. Focus on abstract tech imagery: servers, data flows, neural networks, GPU chips.
+```
