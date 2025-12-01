@@ -1,4 +1,4 @@
-# SoundHound AIを調べてみた：音声AIの新星は投資チャンスか
+# [米国株 銘柄分析] SoundHound AIを調べてみた：音声AIの新星は投資チャンスか
 
 #AI投資 #SoundHound #音声AI #米国株 #テック投資 #はじめてのnote #20代 #毎日更新 #投資 #資産形成 #AI活用
 
