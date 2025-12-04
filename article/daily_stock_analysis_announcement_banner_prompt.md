@@ -7,27 +7,28 @@
 ### 日本語プロンプト（推奨）
 
 ```
-「米国株銘柄分析 毎日投稿」宣言バナー。左側から中央にかけて、「毎日1銘柄分析」「Daily Stock Analysis」「テンバガーを探そう」のタイトルテキストを大きく配置。背景にアメリカを象徴するビジュアル：ウォール街、ニューヨーク証券取引所、ナスダックの電光掲示板、星条旗モチーフ、自由の女神のシルエット。成長とテンバガーのイメージ：上昇する株価チャート、「10x」「×10」のテキスト、ロケットのアイコン、右肩上がりのグラフ、緑色の上昇矢印。AIセクターの要素：半導体チップ、GPU、AIロボット、データセンター。右端に参考画像のアイヒモのキャラクター（肩より上のバストショット）を配置。アイヒモの表情は参考画像からわずかに明るくする程度（大きく変えない）。カラースキームはアメリカンカラー：ネイビーブルー（#002868）、ディープレッド（#BF0A30）、ゴールド（#FFD700）をベースに、成長グリーン（#2ECC71）、テクノロジーブルー（#0066CC）、エネルギッシュオレンジ（#E67E22）をアクセントに。エネルギッシュで前向きなデザイン、毎日更新の継続性と信頼感。16:9の横長バナー、高解像度、投資家向け告知コンテンツ。アイヒモのキャラクターは参考画像のスタイルを維持し、表情をわずかに明るくする程度。
+米国株銘柄分析毎日投稿の宣言バナー。左側に2段構成のタイトルテキスト：1段目「毎日1銘柄分析」を大きく配置、2段目（その下部）にサブタイトル「テンバガー候補を一緒に探そう」をやや小さく配置。タイトルの右横に、参考画像のアイヒモのキャラクター（肩より上のバストショット）を配置。アイヒモの表情は参考画像のイメージ通りに維持。背景にアメリカを象徴するビジュアル：ウォール街、ニューヨーク証券取引所、ナスダックの電光掲示板、星条旗モチーフ、自由の女神のシルエット。成長とテンバガーのイメージ：上昇する株価チャート、「10x」「×10」のテキスト、ロケットのアイコン、右肩上がりのグラフ、緑色の上昇矢印。AIセクターの要素：半導体チップ、GPU、AIロボット、データセンター。カラースキームはアメリカンカラー：ネイビーブルー（#002868）、ディープレッド（#BF0A30）、ゴールド（#FFD700）をベースに、成長グリーン（#2ECC71）、テクノロジーブルー（#0066CC）、エネルギッシュオレンジ（#E67E22）をアクセントに。エネルギッシュで前向きなデザイン、毎日更新の継続性と信頼感。16:9の横長バナー、高解像度、投資家向け告知コンテンツ。アイヒモのキャラクターは参考画像のスタイルをそのまま維持。
 ```
 
 ### 英語プロンプト（より詳細）
 
 ```
-"Daily US Stock Analysis" announcement banner. Left to center: Large title text "毎日1銘柄分析" "Daily Stock Analysis" "Let's Find 10-Baggers" prominently displayed. Background: American symbols including Wall Street, New York Stock Exchange, NASDAQ electronic board, American flag motifs, Statue of Liberty silhouette. Growth and 10-bagger imagery: upward trending stock charts, "10x" "×10" text, rocket icons, upward sloping graphs, green upward arrows. AI sector elements: semiconductor chips, GPUs, AI robots, data centers. Right edge: Aihimo character from reference image (bust shot, shoulders and above). Aihimo's expression should be slightly brighter than reference image, but only subtly modified (maintain original style). Color scheme: American colors as base - Navy blue (#002868), Deep red (#BF0A30), Gold (#FFD700), with accents of Growth green (#2ECC71), Technology blue (#0066CC), Energetic orange (#E67E22). Energetic, positive, forward-looking design conveying daily commitment and trustworthiness. 16:9 aspect ratio, high resolution, investor announcement content. Character maintains reference image style with expression only slightly brightened.
+"Daily US Stock Analysis" announcement banner. Left side: Two-tier title text layout - Top tier: "毎日1銘柄分析" (Daily 1 Stock Analysis) in large, prominent font. Bottom tier (below top tier): Subtitle "テンバガー候補を一緒に探そう" (Let's Find 10-Bagger Candidates Together) in smaller font. Right side of title: Aihimo character from reference image (bust shot, shoulders and above). Aihimo's expression should match the reference image exactly (maintain original style without modification). Background: American symbols including Wall Street, New York Stock Exchange, NASDAQ electronic board, American flag motifs, Statue of Liberty silhouette. Growth and 10-bagger imagery: upward trending stock charts, "10x" "×10" text, rocket icons, upward sloping graphs, green upward arrows. AI sector elements: semiconductor chips, GPUs, AI robots, data centers. Color scheme: American colors as base - Navy blue (#002868), Deep red (#BF0A30), Gold (#FFD700), with accents of Growth green (#2ECC71), Technology blue (#0066CC), Energetic orange (#E67E22). Energetic, positive, forward-looking design conveying daily commitment and trustworthiness. 16:9 aspect ratio, high resolution, investor announcement content. Character maintains reference image style exactly as provided.
 ```
 
 ---
 
 ## デザイン要素
 
-1. **タイトルテキスト**: 左～中央に配置「毎日1銘柄分析」「Daily Stock Analysis」
-2. **サブタイトル**: 「テンバガーを探そう」「Let's Find 10-Baggers」
-3. **アイヒモのキャラクター**: 右端に配置（肩より上、参考画像から表情わずかに明るく）
-4. **アメリカンシンボル**: ウォール街、NYSE、ナスダック、星条旗、自由の女神
-5. **成長イメージ**: 上昇チャート、10x表記、ロケット🚀、緑の矢印↗️
-6. **AIセクター要素**: 半導体チップ、GPU、AI技術
-7. **毎日更新**: 「Daily」「毎日」の強調
-8. **継続性**: カレンダーアイコン、365日のイメージ
+1. **タイトルテキスト（1段目）**: 左側に大きく配置「毎日1銘柄分析」
+2. **サブタイトル（2段目）**: 1段目の下部に配置「テンバガー候補を一緒に探そう」
+3. **アイヒモのキャラクター**: タイトルの右横に配置（肩より上のバストショット、参考画像をそのまま使用）
+4. **アイヒモの表情**: 参考画像のイメージ通りに維持（変更なし）
+5. **アメリカンシンボル**: ウォール街、NYSE、ナスダック、星条旗、自由の女神
+6. **成長イメージ**: 上昇チャート、10x表記、ロケット🚀、緑の矢印↗️
+7. **AIセクター要素**: 半導体チップ、GPU、AI技術
+8. **毎日更新**: 「Daily」「毎日」の強調
+9. **継続性**: カレンダーアイコン、365日のイメージ
 
 ## 推奨レイアウト
 
@@ -35,20 +36,20 @@
 ┌─────────────────────────────────────────────────────────────┐
 │  [背景: ウォール街、星条旗、上昇チャート]                    │
 │                                                             │
-│  🚀 【毎日1銘柄分析】                        ┌────────┐  │
-│     Daily Stock Analysis                    │アイヒモ │  │
-│     テンバガーを探そう                      │(肩より上)│  │
-│                                              │わずかに │  │
-│  📈 10x  🇺🇸 米国株  💻 AI                 │明るい表情│  │
-│  [上昇]  [NYSE]     [半導体]                └────────┘  │
+│  【毎日1銘柄分析】                       ┌─────────┐      │
+│   テンバガー候補を一緒に探そう           │ アイヒモ  │      │
+│                                          │ (肩より上)│      │
+│                                          │元の表情そのまま│  │
+│  🚀 10x  📈 米国株  💻 AI              └─────────┘      │
+│  [上昇]  [NYSE]     [半導体]                              │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 **レイアウトのポイント:**
-- 左～中央：タイトル、成長イメージ、アメリカンシンボル
-- 右端：アイヒモのキャラクター
-- アイヒモは参考画像から表情をわずかに明るくする程度（大幅な変更なし）
+- 左側：2段構成のタイトル（1段目：メインタイトル、2段目：サブタイトル）
+- 右側：アイヒモのキャラクター（肩より上）
+- アイヒモは参考画像のスタイルをそのまま維持（表情変更なし）
 - 背景：アメリカ市場 + 成長 + AIセクターの融合
 - 全体：エネルギッシュで前向き、毎日投稿の継続性を感じさせる
 
@@ -78,12 +79,13 @@
 
 **重要**: 参考画像とプロンプトを必ず一緒に入力してください。参考画像なしではアイヒモのキャラクターが正確に再現されません。
 
-**表情の調整**: 「参考画像から表情をわずかに明るくする」と指定することで、元のスタイルを維持しつつ、わずかな変更のみ適用されます。
+**キャラクター**: アイヒモの表情は参考画像のイメージ通りにそのまま維持されます。変更は加えません。
 
 ---
 
 **作成日**: 2025-12-03
+**更新日**: 2025-12-03
 **用途**: 毎日銘柄分析投稿宣言記事用バナー画像
-**推奨**: エネルギッシュで継続性を感じさせるデザイン、右端にアイヒモ配置
+**推奨**: エネルギッシュで継続性を感じさせるデザイン、タイトル右横にアイヒモ配置
 **生成ツール**: nanobanana（バナナpro）
-**キャラクター**: 参考画像から表情をわずかに明るくする程度
+**キャラクター**: 参考画像のスタイルをそのまま維持（表情変更なし）
