@@ -1,4 +1,4 @@
-# Palantir Technologies 記事用バナー画像生成プロンプト
+# Aurora Innovation（AUR）記事用バナー画像生成プロンプト
 
 ## 概要
 
@@ -9,20 +9,20 @@
 ## nanobanana用プロンプト（日本語）
 
 ```
-Palantir Technologies（PLTR）の米国株投資分析を紹介するnote記事のバナー画像を作成してください。
+Aurora Innovation（AUR）の米国株投資分析を紹介するnote記事のバナー画像を作成してください。
 
 【レイアウト】
 - 左側：タイトルテキスト（3段構成）
   - 1段目：「米国株 銘柄分析」（小さめ、カテゴリ表示）
-  - 2段目：「Palantir Technologies (PLTR)」（大きく、太字）
-  - 3段目：「防衛とAI、2つの顔を持つデータ企業」（やや小さく）
+  - 2段目：「Aurora Innovation (AUR)」（大きく、太字）
+  - 3段目：「無人トラック100,000マイル無事故達成」（やや小さく）
 - 右下隅：アイヒモのキャラクター（小さめ、肩より上のバストショット）
-- 余白：企業の事業内容を表すイラスト（データ分析グラフ、ネットワーク図など）
+- 余白：企業の事業内容を表すイラスト（無人トラック、自律走行センサー、高速道路など）
 
 【デザイン要素】
 - 背景：白またはライトグレーのシンプルな背景
 - テキストカラー：ネイビーまたはダークグレー
-- アクセント：Palantirのブランドカラー（ダークブルー）を控えめに使用
+- アクセント：Aurora のブランドカラー（ブルー系）を控えめに使用
 - 装飾：最小限（線や複雑な図形は不要）
 
 【キャラクター：アイヒモ】
@@ -32,14 +32,15 @@ Palantir Technologies（PLTR）の米国株投資分析を紹介するnote記事
 
 【企業イラスト】
 - 余白（背景の一部）に1つ追加
-- 例：データ分析グラフ、ネットワーク接続図、AIチップのイメージ
+- 例：無人トラック（側面図）、LiDARセンサー、高速道路、自律走行アイコン
 - 控えめで、タイトルの邪魔にならないように配置
-- Palantirの事業（データ統合・分析プラットフォーム）が視覚的に伝わるもの
+- Auroraの事業（自律走行トラック）が視覚的に伝わるもの
 
 【全体の雰囲気】
 - シンプルでクリーン
 - プロフェッショナルで読みやすい
 - 装飾を控え、情報を明確に伝える
+- 自律走行技術企業らしい先進的な印象
 
 【サイズ】
 - 横長バナー（16:9または類似の比率）
@@ -51,20 +52,20 @@ Palantir Technologies（PLTR）の米国株投資分析を紹介するnote記事
 ## nanobanana用プロンプト（英語）
 
 ```
-Create a banner image for a note article analyzing Palantir Technologies (PLTR) as a US stock investment.
+Create a banner image for a note article analyzing Aurora Innovation (AUR) as a US stock investment.
 
 【Layout】
 - Left side: Title text (3-tier structure)
   - Tier 1: "US Stock Analysis" (smaller, category label)
-  - Tier 2: "Palantir Technologies (PLTR)" (large, bold)
-  - Tier 3: "Defense & AI: A Dual-Faced Data Platform" (smaller)
+  - Tier 2: "Aurora Innovation (AUR)" (large, bold)
+  - Tier 3: "100,000 Miles Accident-Free Autonomous Trucking" (smaller)
 - Bottom right corner: Aihimo character (small size, bust shot from shoulders up)
-- Whitespace: Business illustration (data analytics graph, network diagram, etc.)
+- Whitespace: Business illustration (autonomous truck, LiDAR sensor, highway, etc.)
 
 【Design Elements】
 - Background: Simple white or light gray background
 - Text Color: Navy or dark gray
-- Accent: Palantir brand color (dark blue) used sparingly
+- Accent: Aurora brand color (blue tones) used sparingly
 - Decoration: Minimal (no complex lines or shapes)
 
 【Character: Aihimo】
@@ -74,14 +75,15 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 
 【Business Illustration】
 - Add one illustration in whitespace (background area)
-- Examples: Data analytics graph, network connection diagram, AI chip imagery
+- Examples: Autonomous truck (side view), LiDAR sensor, highway, autonomous driving icon
 - Subtle, not interfering with the title
-- Visually conveys Palantir's business (data integration & analytics platform)
+- Visually conveys Aurora's business (autonomous trucking)
 
 【Overall Atmosphere】
 - Simple and clean
 - Professional and readable
 - Minimal decoration, clear information delivery
+- Advanced impression befitting an autonomous driving technology company
 
 【Size】
 - Horizontal banner (16:9 or similar ratio)
@@ -95,23 +97,23 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 ### 必須要素
 1. **タイトル（左側、3段構成）**
    - 1段目：「米国株 銘柄分析」（小さめ）
-   - 2段目：「Palantir Technologies (PLTR)」（大きく、太字）
-   - 3段目：「防衛とAI、2つの顔を持つデータ企業」（やや小さく）
+   - 2段目：「Aurora Innovation (AUR)」（大きく、太字）
+   - 3段目：「無人トラック100,000マイル無事故達成」（やや小さく）
 
 2. **キャラクター（右下隅）**
    - アイヒモ（参考画像のスタイル維持）
    - 小さめサイズ、控えめに配置
 
 3. **企業イラスト（余白）**
-   - データ分析グラフ、ネットワーク図、AIチップなど
-   - Palantirの事業内容が視覚的に伝わるもの
+   - 無人トラック、LiDARセンサー、高速道路など
+   - Auroraの事業内容が視覚的に伝わるもの
    - 1つのみ、控えめに配置
 
 4. **背景**
    - シンプルな単色背景（白またはライトグレー）
 
 ### オプション要素（最小限）
-- Palantirのブランドカラー（ダークブルー `#0A2540`）をアクセントとして控えめに使用
+- Aurora のブランドカラー（ブルー系 `#0066CC` または `#1E90FF`）をアクセントとして控えめに使用
 - タイトルとキャラクターの間に余白を十分に確保
 
 ### 不要な要素
@@ -126,15 +128,15 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ 米国株 銘柄分析                   [データグラフ]│
+│ 米国株 銘柄分析             [無人トラック]      │
 │                                                 │
-│ Palantir Technologies (PLTR)                    │
-│ 防衛とAI、2つの顔を持つデータ企業                │
+│ Aurora Innovation (AUR)                         │
+│ 無人トラック100,000マイル無事故達成              │
 │                                                 │
 │                                    [アイヒモ]   │
 │                                      (小)       │
 └─────────────────────────────────────────────────┘
-   ↑ タイトル（左側、3段）   ↑ イラスト  ↑ キャラクター（右下、小）
+   ↑ タイトル（左側、3段）  ↑ イラスト  ↑ キャラクター（右下、小）
 ```
 
 ---
@@ -178,20 +180,21 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 - **背景**: `#FFFFFF`（ホワイト）または `#F5F5F5`（ライトグレー）
 
 ### アクセントカラー（控えめに使用）
-- **Palantir ブランドカラー**: `#0A2540`（ダークブルー）
+- **Aurora ブランドカラー（ブルー）**: `#0066CC` または `#1E90FF`
+- **テクノロジー系ブルー**: `#4A90E2`
 
 ---
 
 ## 企業イラストの例
 
-### Palantir Technologies の場合
-- **データ分析グラフ**：折れ線グラフ、棒グラフ、円グラフなど
-- **ネットワーク図**：ノードとエッジで構成されたネットワーク接続図
-- **AIチップ**：プロセッサ、チップセットのイメージ
-- **セキュリティアイコン**：シールド、錠前、暗号化のイメージ
-- **データフローダイアグラム**：データが流れるイメージ
+### Aurora Innovation の場合
+- **無人トラック（側面図）**：シンプルなトラックのシルエット、センサーが見える
+- **LiDARセンサー**：360度スキャン、レーザー光線のイメージ
+- **高速道路**：長距離輸送のイメージ、道路標示
+- **自律走行アイコン**：ステアリングホイールとAIのシンボル
+- **センサーネットワーク**：カメラ、レーダー、LiDARの統合図
 
-**推奨**: ネットワーク図またはデータフローダイアグラムが最もPalantirのビジネスを表現しやすい。
+**推奨**: 無人トラック（側面図）が最もAuroraのビジネスを表現しやすい。
 
 ---
 
@@ -202,19 +205,19 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 ### パターンA：完全ミニマル（推奨）
 - 背景：完全な白（`#FFFFFF`）
 - テキスト：ダークグレー（`#2C3E50`）
-- 企業イラスト：シンプルなネットワーク図（グレートーン）
+- 企業イラスト：シンプルな無人トラック（グレートーン）
 - アクセント：なし
 
 ### パターンB：ブランドカラー強調
 - 背景：ライトグレー（`#F5F5F5`）
 - テキスト：ネイビー（`#1A1A2E`）
-- 企業イラスト：データグラフ（ダークブルー `#0A2540`）
-- アクセント：2段目「Palantir Technologies」をダークブルーに
+- 企業イラスト：無人トラック（ブルー `#0066CC`）
+- アクセント：2段目「Aurora Innovation」をブルーに
 
 ### パターンC：グレーベース
 - 背景：ライトグレー（`#F5F5F5`）
 - テキスト：ダークグレー（`#2C3E50`）
-- 企業イラスト：AIチップ（グレートーン）
+- 企業イラスト：LiDARセンサー（グレートーン）
 - アクセント：なし
 
 **推奨**: パターンA（完全ミニマル）が最もシンプルで読みやすいです。
@@ -223,7 +226,7 @@ Create a banner image for a note article analyzing Palantir Technologies (PLTR) 
 
 **作成日**: 2025-12-07
 **更新日**: 2025-12-07
-**用途**: Palantir Technologies 記事用バナー（改善版）
+**用途**: Aurora Innovation（AUR）記事用バナー（改善版）
 **特記事項**:
 - 3段構成タイトル（「米国株 銘柄分析」追加）
 - アイヒモを右下隅に小さめ配置
