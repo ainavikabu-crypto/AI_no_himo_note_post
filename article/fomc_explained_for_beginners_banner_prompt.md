@@ -13,9 +13,9 @@
 
 【レイアウト】
 - 左側：タイトルテキスト（3段構成）
-  - 1段目：「投資の基礎知識」（小さめ、カテゴリ表示）
-  - 2段目：「FOMCって何？」（大きく、太字）
-  - 3段目：「株価への影響を徹底解説」（やや小さく）
+  - 1段目：「明日12/9開催！」（小さめ、赤またはオレンジで緊急性を強調）
+  - 2段目：「まだ間に合う！FOMC完全ガイド」（大きく、太字）
+  - 3段目：「初心者向け - 株価への影響を徹底解説」（やや小さく）
 - 右下隅：アイヒモのキャラクター（小さめ、肩より上のバストショット）
 - 余白：FOMCに関連するイラスト（FRBビル、金利グラフ、株価チャートなど）
 
@@ -57,9 +57,9 @@ Create a banner image for a beginner's guide to FOMC (Federal Open Market Commit
 
 【Layout】
 - Left side: Title text (3-tier structure)
-  - Tier 1: "Investment Basics" (smaller, category label)
-  - Tier 2: "What is FOMC?" (large, bold)
-  - Tier 3: "Complete Guide to Stock Market Impact" (smaller)
+  - Tier 1: "Starting Tomorrow 12/9!" (smaller, red or orange to emphasize urgency)
+  - Tier 2: "Still Time! Complete FOMC Guide" (large, bold)
+  - Tier 3: "Beginner-Friendly - Stock Market Impact Explained" (smaller)
 - Bottom right corner: Aihimo character (small size, bust shot from shoulders up)
 - Whitespace: FOMC-related illustration (FRB building, interest rate graph, stock chart, etc.)
 
@@ -98,9 +98,9 @@ Create a banner image for a beginner's guide to FOMC (Federal Open Market Commit
 
 ### 必須要素
 1. **タイトル（左側、3段構成）**
-   - 1段目：「投資の基礎知識」（小さめ）
-   - 2段目：「FOMCって何？」（大きく、太字）
-   - 3段目：「株価への影響を徹底解説」（やや小さく）
+   - 1段目：「明日12/9開催！」（小さめ、赤またはオレンジで緊急性を強調）
+   - 2段目：「まだ間に合う！FOMC完全ガイド」（大きく、太字）
+   - 3段目：「初心者向け - 株価への影響を徹底解説」（やや小さく）
 
 2. **キャラクター（右下隅）**
    - アイヒモ（参考画像のスタイル維持）
@@ -130,15 +130,16 @@ Create a banner image for a beginner's guide to FOMC (Federal Open Market Commit
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ 投資の基礎知識        [金利グラフ]              │
+│ 明日12/9開催！（赤/オレンジ）  [金利グラフ]    │
 │                                                 │
-│ FOMCって何？                                     │
-│ 株価への影響を徹底解説                           │
+│ まだ間に合う！FOMC完全ガイド                    │
+│ 初心者向け - 株価への影響を徹底解説             │
 │                                                 │
 │                                    [アイヒモ]   │
 │                                      (小)       │
 └─────────────────────────────────────────────────┘
    ↑ タイトル（左側、3段）  ↑ イラスト  ↑ キャラクター（右下、小）
+   （1段目に緊急性）
 ```
 
 ---
@@ -179,10 +180,10 @@ Create a banner image for a beginner's guide to FOMC (Federal Open Market Commit
 - **背景**: `#FFFFFF`（ホワイト）または `#E8F4F8`（ライトブルー）
 
 ### アクセントカラー（控えめに使用）
+- **緊急性を示す色（1段目「明日12/9開催！」用）**: `#E74C3C`（レッド）または `#FF6B35`（オレンジ）
 - **金融ブルー**: `#3498DB` または `#2E86C1`
 - **ネイビー**: `#1A1A2E`
 - **グリーン（金利上昇）**: `#27AE60`
-- **レッド（金利下降）**: `#E74C3C`
 
 ---
 
@@ -241,10 +242,12 @@ Create a banner image for a beginner's guide to FOMC (Federal Open Market Commit
 
 ---
 
-**作成日**: 2025-12-07
-**用途**: FOMC初心者向け解説記事用バナー
+**作成日**: 2025-12-07（修正版）
+**用途**: FOMC初心者向け解説記事用バナー（明日12/9開催の緊急性を強調）
 **特記事項**:
+- **「明日12/9開催！」を1段目で赤/オレンジで強調**
+- **「まだ間に合う！」で学習のモチベーションを高める**
 - 教育的で親しみやすい雰囲気
 - 金利グラフまたは株価チャートのイラスト推奨
-- カテゴリ「投資の基礎知識」で初心者向けを明示
+- 初心者向けであることを明示
 - シンプルなデザインで情報を明確に伝える
