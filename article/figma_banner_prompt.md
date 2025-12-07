@@ -2,7 +2,7 @@
 
 ## 概要
 
-この記事用のバナー画像は、**シンプルでミニマルなデザイン**を重視しています。装飾を最小限に抑え、タイトルとキャラクターに焦点を当てたクリーンなレイアウトです。
+この記事用のバナー画像は、**シンプルでミニマルなデザイン**を重視しています。装飾を最小限に抑え、タイトルと企業のビジネスイメージに焦点を当てたクリーンなレイアウトです。
 
 ---
 
@@ -12,21 +12,29 @@
 Figma（FIG）の米国株IPO分析を紹介するnote記事のバナー画像を作成してください。
 
 【レイアウト】
-- 左側：タイトルテキスト（2段構成）
-  - 1段目：「Figma (FIG)」（大きく、太字）
-  - 2段目：「IPO初日3.5倍、デザインツールの新星」（やや小さく）
-- 右側：アイヒモのキャラクター（肩より上のバストショット）
+- 左側：タイトルテキスト（3段構成）
+  - 1段目：「米国株 銘柄分析」（小さめ、カテゴリ表示）
+  - 2段目：「Figma (FIG)」（大きく、太字）
+  - 3段目：「IPO初日3.5倍、デザインツールの新星」（やや小さく）
+- 右下隅：アイヒモのキャラクター（小さめ、肩より上のバストショット）
+- 余白：企業の事業内容を表すイラスト（デザインツール、UIフレーム、ペンツールなど）
 
 【デザイン要素】
 - 背景：白またはライトグレーのシンプルな背景
 - テキストカラー：ネイビーまたはダークグレー
 - アクセント：Figmaのブランドカラー（パープル・レッド系）を控えめに使用
-- 装飾：最小限（線や図形などの装飾は不要）
+- 装飾：最小限（線や複雑な図形は不要）
 
 【キャラクター：アイヒモ】
 - 参考画像のスタイルをそのまま維持（表情変更なし）
-- 右側に配置、肩より上のバストショット
-- 背景に自然に溶け込むように配置
+- 右下隅に小さめに配置（タイトルの邪魔にならないサイズ）
+- 肩より上のバストショット
+
+【企業イラスト】
+- 余白（背景の一部）に1つ追加
+- 例：UIフレーム、ペンツール、デザインコンポーネント、ベクターグラフィック
+- 控えめで、タイトルの邪魔にならないように配置
+- Figmaの事業（クラウドベースのデザインツール）が視覚的に伝わるもの
 
 【全体の雰囲気】
 - シンプルでクリーン
@@ -47,21 +55,29 @@ Figma（FIG）の米国株IPO分析を紹介するnote記事のバナー画像�
 Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock investment.
 
 【Layout】
-- Left side: Title text (2-tier structure)
-  - Tier 1: "Figma (FIG)" (large, bold)
-  - Tier 2: "IPO Surged 3.5x, Rising Star in Design Tools" (smaller)
-- Right side: Aihimo character (bust shot, shoulders and above)
+- Left side: Title text (3-tier structure)
+  - Tier 1: "US Stock Analysis" (smaller, category label)
+  - Tier 2: "Figma (FIG)" (large, bold)
+  - Tier 3: "IPO Surged 3.5x, Rising Star in Design Tools" (smaller)
+- Bottom right corner: Aihimo character (small size, bust shot from shoulders up)
+- Whitespace: Business illustration (design tool, UI frame, pen tool, etc.)
 
 【Design Elements】
 - Background: Simple white or light gray background
 - Text Color: Navy or dark gray
 - Accent: Figma brand color (purple-red) used sparingly
-- Decoration: Minimal (no decorative lines or shapes)
+- Decoration: Minimal (no complex lines or shapes)
 
 【Character: Aihimo】
 - Maintain reference image style exactly (no expression changes)
-- Positioned on the right side, shoulders and above
-- Naturally integrated into the background
+- Positioned in bottom right corner, small size (not interfering with title)
+- Bust shot, shoulders and above
+
+【Business Illustration】
+- Add one illustration in whitespace (background area)
+- Examples: UI frame, pen tool, design components, vector graphics
+- Subtle, not interfering with the title
+- Visually conveys Figma's business (cloud-based design tool)
 
 【Overall Atmosphere】
 - Simple and clean
@@ -76,17 +92,24 @@ Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock
 
 ---
 
-## デザイン要素リスト（シンプル版）
+## デザイン要素リスト（改善版）
 
 ### 必須要素
-1. **タイトル（左側）**
-   - 1段目：「Figma (FIG)」
-   - 2段目：「IPO初日3.5倍、デザインツールの新星」
+1. **タイトル（左側、3段構成）**
+   - 1段目：「米国株 銘柄分析」（小さめ）
+   - 2段目：「Figma (FIG)」（大きく、太字）
+   - 3段目：「IPO初日3.5倍、デザインツールの新星」（やや小さく）
 
-2. **キャラクター（右側）**
+2. **キャラクター（右下隅）**
    - アイヒモ（参考画像のスタイル維持）
+   - 小さめサイズ、控えめに配置
 
-3. **背景**
+3. **企業イラスト（余白）**
+   - UIフレーム、ペンツール、デザインコンポーネントなど
+   - Figmaの事業内容が視覚的に伝わるもの
+   - 1つのみ、控えめに配置
+
+4. **背景**
    - シンプルな単色背景（白またはライトグレー）
 
 ### オプション要素（最小限）
@@ -101,17 +124,19 @@ Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock
 
 ---
 
-## レイアウト図（シンプル版）
+## レイアウト図（改善版）
 
 ```
 ┌─────────────────────────────────────────────────┐
+│ 米国株 銘柄分析              [UIフレーム]       │
 │                                                 │
-│  Figma (FIG)                                    │
-│  IPO初日3.5倍、デザインツールの新星   [アイヒモ] │
-│                                         (顔)    │
+│ Figma (FIG)                                     │
+│ IPO初日3.5倍、デザインツールの新星               │
 │                                                 │
+│                                    [アイヒモ]   │
+│                                      (小)       │
 └─────────────────────────────────────────────────┘
-   ↑ タイトル（左寄せ）              ↑ キャラクター（右寄せ）
+   ↑ タイトル（左側、3段）  ↑ イラスト  ↑ キャラクター（右下、小）
 ```
 
 ---
@@ -137,8 +162,14 @@ Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock
 3. **シンプルさを重視**
    このバナーは装飾を最小限に抑えたシンプルなデザインです。複雑な要素を追加しないでください。
 
-4. **複数パターン生成**
-   一度に複数のバリエーションを生成し、最も読みやすくシンプルなものを選んでください。
+4. **企業イラストは1つのみ**
+   余白に企業の事業内容を表すイラストを1つだけ追加してください。多すぎると煩雑になります。
+
+5. **キャラクターは控えめに**
+   アイヒモのキャラクターは右下隅に小さめに配置し、タイトルや企業イラストの邪魔にならないようにしてください。
+
+6. **複数パターン生成**
+   一度に複数のバリエーションを生成し、最も読みやすくバランスの良いものを選んでください。
 
 ---
 
@@ -155,6 +186,19 @@ Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock
 
 ---
 
+## 企業イラストの例
+
+### Figma の場合
+- **UIフレーム**：長方形のフレーム、複数のアートボード
+- **ペンツール**：ベジェ曲線、パスツール
+- **デザインコンポーネント**：ボタン、アイコン、UI要素
+- **ベクターグラフィック**：シンプルな図形、アイコンセット
+- **コラボレーションアイコン**：複数のカーソル、リアルタイム編集のイメージ
+
+**推奨**: UIフレームまたはペンツールが最もFigmaのビジネスを表現しやすい。
+
+---
+
 ## バリエーション案（必要に応じて）
 
 もし複数のバナーパターンを試したい場合、以下の微調整を検討してください：
@@ -162,22 +206,30 @@ Create a banner image for a note article analyzing Figma (FIG) IPO as a US stock
 ### パターンA：完全ミニマル（推奨）
 - 背景：完全な白（`#FFFFFF`）
 - テキスト：ダークグレー（`#2C3E50`）
+- 企業イラスト：シンプルなUIフレーム（グレートーン）
 - アクセント：なし
 
 ### パターンB：ブランドカラー強調
 - 背景：ライトグレー（`#F5F5F5`）
 - テキスト：ネイビー（`#1A1A2E`）
-- アクセント：タイトル「Figma」の文字をパープル（`#A259FF`）に
+- 企業イラスト：ペンツール（パープル `#A259FF`）
+- アクセント：2段目「Figma」をパープルに
 
 ### パターンC：グレーベース
 - 背景：ライトグレー（`#F5F5F5`）
 - テキスト：ダークグレー（`#2C3E50`）
-- アクセント：2段目テキストの下に細いラインを追加（パープル `#A259FF`）
+- 企業イラスト：デザインコンポーネント（グレートーン）
+- アクセント：なし
 
 **推奨**: パターンA（完全ミニマル）が最もシンプルで読みやすいです。
 
 ---
 
 **作成日**: 2025-12-07
-**用途**: Figma（FIG）記事用バナー（シンプル版）
-**特記事項**: 装飾を最小限に抑え、タイトルとキャラクターに焦点を当てたクリーンなデザイン
+**更新日**: 2025-12-07
+**用途**: Figma（FIG）記事用バナー（改善版）
+**特記事項**:
+- 3段構成タイトル（「米国株 銘柄分析」追加）
+- アイヒモを右下隅に小さめ配置
+- 企業の事業内容を表すイラストを1つ追加
+- 装飾を最小限に抑えたクリーンなデザイン
